@@ -1,10 +1,10 @@
-﻿pool:
+pool:
   vmImage: vs2017-win2016
 variables:
   buildConfiguration: Release
 steps:
   - script: >
-      dotnet build --configuration $(buildConfiguration)
+      dotnet build TestEase.sln --configuration $(buildConfiguration)
 
       dotnet test TestEase.Tests --configuration $(buildConfiguration) --logger trx
   - task: PublishTestResults@2
