@@ -4,22 +4,17 @@ variables:
   buildConfiguration: Release
 steps:
   - task: DotNetCoreCLI@2
+    displayName: ".NET build"
     inputs:
       command: build
-      Configuration: $(buildConfiguration)
-  # - script: >
-  #     dotnet build TestEase.sln --configuration $(buildConfiguration)
-  #     dotnet test TestEase.Tests\TestEase.Tests.csproj --configuration $(buildConfiguration) --logger trx
-  # - task: PublishTestResults@2
-  #   condition: succeededOrFailed()
-  #   inputs:
-  #     testRunner: VSTest
-  #     testResultsFiles: '**/*.trx'
+      projects: '**/*.csproj'
+      arguments: --configuration $(BuildConfiguration)
+
   - task: DotNetCoreCLI@2
     condition: succeededOrFailed()
     inputs:
       command: pack
-      configuration: $(buildConfiguration)
+      arguments: --configuration $(BuildConfiguration)
       packagesToPack: '**/TestEase.csproj'
       versioningScheme: byEnvVar
       versionEnvVar: Build.BuildNumber
