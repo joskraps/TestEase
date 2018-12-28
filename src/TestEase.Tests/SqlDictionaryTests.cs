@@ -1,9 +1,12 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 
 namespace TestEase.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
 
@@ -11,9 +14,35 @@ namespace TestEase.Tests
     public class SqlDictionaryTests
     {
         private dynamic results;
+        public static string ConnectionString
+        {
+            get
+            {
+
+                var envConnectionString = ConfigHelper.GetConfigRoot()["DbConnection"];
+
+                return string.IsNullOrWhiteSpace(envConnectionString) ? "Data Source=.\\ct;Initial Catalog=master;Integrated Security=True" : envConnectionString;
+            }
+        }
+
+        public static class ConfigHelper
+        {
+            public static IConfigurationRoot GetConfigRoot()
+            {
+                var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddEnvironmentVariables();
+
+                var returnConfig = builder.Build();
+
+                return returnConfig;
+            }
+        }
         private readonly Dictionary<string, string> testConnections = new Dictionary<string, string>()
                                                                           {
-                                                                              {"Test", "Data Source=.\\ct;Initial Catalog=master;Integrated Security=True"},
+                                                                              {"Test", ConnectionString},
                                                                               {
                                                                                   "BadConnection",
                                                                                   "Data Source=NOWHERE;Initial Catalog=master;Integrated Security=True;Connection Timeout=1"
