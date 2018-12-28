@@ -1,7 +1,8 @@
 ﻿namespace TestEase.LibraryItemDictionaries
 {
-    using TestEase.LibraryItems;
+    using LibraryItems;
 
+    /// <inheritdoc />
     /// <summary>
     /// The xml item dictionary.
     /// </summary>

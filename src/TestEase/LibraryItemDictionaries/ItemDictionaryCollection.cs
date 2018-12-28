@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    using TestEase.LibraryItems;
+    using LibraryItems;
 
+    /// <inheritdoc />
     /// <summary>
     /// Collection of item dictionaries and helper for registering
     /// </summary>
@@ -35,24 +36,23 @@
         {
             var instance = dictionary ?? new T();
 
-            if (this.ContainsKey(instance.FileExtension))
+            if (ContainsKey(instance.FileExtension))
             {
                 if (!overrideRegistration)
                 {
-                    throw new ArgumentException("Dictionary already registered and override is disabled");
+                    throw new ArgumentException($"Dictionary already registered and override is disabled. Dictionary type: {instance.FileExtension}");
                 }
 
                 this[instance.FileExtension] = instance;
-
-                if (!this.ExtensionMappings.ContainsKey(instance.FileType))
-                {
-                    this.ExtensionMappings.Add(instance.FileType, instance.FileExtension);
-                }
             }
             else
             {
-                this.Add(instance.FileExtension, instance);
-                this.ExtensionMappings.Add(instance.FileType, instance.FileExtension);
+                Add(instance.FileExtension, instance);
+
+                if (!ExtensionMappings.ContainsKey(instance.FileType))
+                {
+                    ExtensionMappings.Add(instance.FileType, instance.FileExtension);
+                }
             }
         }
     }
