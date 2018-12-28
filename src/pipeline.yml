@@ -3,14 +3,18 @@ pool:
 variables:
   buildConfiguration: Release
 steps:
-  - script: >
-      dotnet build TestEase.sln --configuration $(buildConfiguration)
-      dotnet test TestEase.Tests\TestEase.Tests.csproj --configuration $(buildConfiguration) --logger trx
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
+  - task: DotNetCoreCLI@2
     inputs:
-      testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      command: build
+      Configuration: $(buildConfiguration)
+  # - script: >
+  #     dotnet build TestEase.sln --configuration $(buildConfiguration)
+  #     dotnet test TestEase.Tests\TestEase.Tests.csproj --configuration $(buildConfiguration) --logger trx
+  # - task: PublishTestResults@2
+  #   condition: succeededOrFailed()
+  #   inputs:
+  #     testRunner: VSTest
+  #     testResultsFiles: '**/*.trx'
   - task: DotNetCoreCLI@2
     condition: succeededOrFailed()
     inputs:
