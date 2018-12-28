@@ -14,13 +14,13 @@ namespace TestEase.Tests
         public void TestQueueWithDefaultReplacements()
         {
             var tm = new TestDataManager();
+            tm.Sql.SetupConnections(new Dictionary<string, string> { { "TEST", "tester" } });
 
-            tm.Sql.SetupConnections(new Dictionary<string, string> { { "WORKSPACE", "tester" } });
-            tm.Sql.QueueLibraryItem("Test.Create_CT_Rule");
+            tm.Sql.QueueLibraryItem("sql.TestDefaultReplacements");
 
             Assert.IsTrue(tm.Sql.GetQueuedSql.Count == 1);
 
-            Assert.IsTrue(tm.Sql.GetQueuedSql.First().Value.ToString() == "\r\n\r\nSelect 1,name,'Boom' from sys.databases\r\n");
+            Assert.IsTrue(tm.Sql.GetQueuedSql.First().Value.ToString() == "\r\n\r\nselect 69,'TEST'\r\n");
         }
 
         [Test]
@@ -28,23 +28,12 @@ namespace TestEase.Tests
         {
             var tm = new TestDataManager();
 
-            tm.Sql.SetupConnections(new Dictionary<string, string> { { "WORKSPACE", "tester" } });
-            tm.Sql.QueueLibraryItem("Test.Create_CT_Rule", new Dictionary<string, object> { { "Test_Replace", 2 } });
+            tm.Sql.SetupConnections(new Dictionary<string, string> { { "TEST", "tester" } });
+
+            tm.Sql.QueueLibraryItem("sql.TestDefaultReplacements",new Dictionary<string, object> { { "TESTVAL1", 96 }, { "TESTVAL2", "BOOM" } });
 
             Assert.IsTrue(tm.Sql.GetQueuedSql.Count == 1);
-            Assert.IsTrue(tm.Sql.GetQueuedSql.First().Value.ToString() == "\r\n\r\nSelect 2,name,'Boom' from sys.databases\r\n");
-        }
-
-        [Test]
-        public void TestQueueWithMultipleReplacements()
-        {
-            var tm = new TestDataManager();
-
-            tm.Sql.SetupConnections(new Dictionary<string, string> { { "WORKSPACE", "tester" } });
-            tm.Sql.QueueLibraryItem("Test.Create_CT_Rule", new Dictionary<string, object> { { "Test_Replace", 6 }, { "Test_Replace2", "New Boom" } });
-
-            Assert.IsTrue(tm.Sql.GetQueuedSql.Count == 1);
-            Assert.IsTrue(tm.Sql.GetQueuedSql.First().Value.ToString() == "\r\n\r\nSelect 6,name,'New Boom' from sys.databases\r\n");
+            Assert.IsTrue(tm.Sql.GetQueuedSql.First().Value.ToString() == "\r\n\r\nselect 96,'BOOM'\r\n");
         }
     }
 }

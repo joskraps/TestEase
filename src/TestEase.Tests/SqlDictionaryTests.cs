@@ -184,11 +184,14 @@ namespace TestEase.Tests
         public void ExecuteLibraryItemWithSingleResult()
         {
             SetupDataManager();
-            testDataManager.Sql.QueueLibraryItem("Test.TestSql");
+            testDataManager.Sql.QueueLibraryItem("sql.SampleSql");
 
             results = testDataManager.Sql.Execute();
 
-            Assert.AreEqual(results[0].Val.ToString(), "1");
+            var result1 = results[0];
+            var prop1 = (IDictionary<String, Object>)result1;
+
+            Assert.AreEqual(prop1[""], 23);
         }
 
         [Test]
@@ -230,14 +233,6 @@ namespace TestEase.Tests
 
             results = testDataManager.Sql.Execute();
 
-            foreach (var li in results)
-            {
-                foreach (var property in (IDictionary<String, Object>)li)
-                {
-                    Console.WriteLine(property.Key + ": " + property.Value);
-                }
-            }
-
             var result1 = results[0];
             var result2 = results[1];
             var prop1 = (IDictionary<String, Object>) result1;
@@ -254,12 +249,16 @@ namespace TestEase.Tests
         public void ExecuteLibraryItemWithIncludesNoReplacements()
         {
             SetupDataManager();
-            testDataManager.Sql.QueueLibraryItem("Test.TestSqlWithIncludes_NoReplacements");
+            testDataManager.Sql.QueueLibraryItem("sql.SampleSqlMultipleResultsNoReplacements");
 
             results = testDataManager.Sql.Execute();
 
-            Assert.AreEqual(results[0].Val.ToString(), "22");
-            Assert.AreEqual(results[1].Val.ToString(), "1");
+            var result1 = results[0];
+            var result2 = results[1];
+            var prop1 = (IDictionary<String, Object>)result1;
+            var prop2 = (IDictionary<String, Object>)result2;
+            Assert.AreEqual(prop1[""].ToString(), "27");
+            Assert.AreEqual(prop2[""].ToString(), "69");
         }
 
         [Test]
@@ -310,7 +309,7 @@ namespace TestEase.Tests
             SetupDataManager();
             void QueueAction()
             {
-                testDataManager.Sql.QueueLibraryItem("Test.TestSqlWithIncludesNoDefaults");
+                testDataManager.Sql.QueueLibraryItem("sql.TestSqlWithIncludes");
             }
 
             Assert.Throws<ArgumentException>((QueueAction));
