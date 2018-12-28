@@ -4,9 +4,8 @@ variables:
   buildConfiguration: Release
 steps:
   - script: >
-      dotnet build TestEase.sln --configuration $(buildConfiguration)
-
-      dotnet test TestEase.Tests --configuration $(buildConfiguration) --logger trx
+      dotnet build --configuration $(buildConfiguration)
+      dotnet test --configuration $(buildConfiguration) --logger trx
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
