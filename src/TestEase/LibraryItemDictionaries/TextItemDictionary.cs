@@ -1,10 +1,10 @@
-﻿namespace TestEase.LibraryItemDictionaries
-{
-    using LibraryItems;
+﻿using TestEase.LibraryItems;
 
+namespace TestEase.LibraryItemDictionaries
+{
     /// <inheritdoc />
     /// <summary>
-    /// The text item dictionary.
+    ///     The text item dictionary.
     /// </summary>
     public class TextItemDictionary : BaseItemDictionary
     {

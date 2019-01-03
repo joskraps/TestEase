@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
@@ -52,13 +53,13 @@ namespace TestEase.Tests
 
         public SqlDictionaryTests()
         {
-            testDataManager = new TestDataManager();
+            testDataManager = new TestDataManager(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             testDataManager.Sql.SetupConnections(testConnections);
         }
 
         private void SetupDataManager()
         {
-            testDataManager = new TestDataManager();
+            testDataManager = new TestDataManager(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             testDataManager.Sql.SetupConnections(testConnections);
         }
 

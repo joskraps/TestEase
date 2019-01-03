@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
+   
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -35,28 +35,20 @@
         /// </summary>
         private readonly IList<string> libraryPaths = new List<string>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TestDataManager"/> class.
-        /// </summary>
-        /// <exception cref="AppDomainUnloadedException">The operation is attempted on an unloaded application domain. </exception>
-        /// <exception cref="System.Security.SecurityException">The caller does not have the required permission. </exception>
-        /// <exception cref="DirectoryNotFoundException">The path is invalid (for example, it is on an unmapped drive). </exception>
-        public TestDataManager()
+        public TestDataManager(string startingPath, string libraryName = "_TestDataLibrary", string sharedPath = "")
         {
             if (AppDomain.CurrentDomain.GetData(DomainKey) == null)
             {
                 AppDomain.CurrentDomain.SetData(DomainKey, this);
             }
 
-            libraryFolderKey = ConfigurationManager.AppSettings["libraryFolderName"] ?? "_TestDataLibrary";
+            libraryFolderKey = libraryName;
 
             InitItemDictionaries();
 
-            var sharedPaths = ConfigurationManager.AppSettings["sharedPaths"];
-
-            if (!string.IsNullOrWhiteSpace(sharedPaths))
+            if (!string.IsNullOrWhiteSpace(sharedPath))
             {
-                foreach (var s in sharedPaths.Split(','))
+                foreach (var s in sharedPath.Split(','))
                 {
                     if (!libraryPaths.Contains(s))
                     {
@@ -65,7 +57,7 @@
                 }
             }
 
-            var libraryFolderPaths = GetTestLibraryFolders();
+            var libraryFolderPaths = GetTestLibraryFolders(startingPath);
 
             foreach (var s in libraryFolderPaths)
             {
@@ -124,10 +116,10 @@
         /// <returns>
         /// Collection of string library paths
         /// </returns>
-        private IEnumerable<string> GetTestLibraryFolders()
+        private IEnumerable<string> GetTestLibraryFolders(string startingPath)
         {
             var projectPath = new DirectoryInfo(
-                Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath) ?? throw new InvalidOperationException());
+                Path.GetDirectoryName(startingPath) ?? throw new InvalidOperationException());
 
             var returnPaths = new List<string>();
             var rootPath = projectPath.FullName;

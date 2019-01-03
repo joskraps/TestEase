@@ -16,10 +16,7 @@ namespace TestEase.LibraryItemDictionaries
         {
             get
             {
-                if (ContainsKey(key))
-                {
-                    return base[key];
-                }
+                if (ContainsKey(key)) return base[key];
                 throw new InvalidOperationException(string.Format("\"{0}\" does not exist in the Test Data Library!",
                     key));
             }

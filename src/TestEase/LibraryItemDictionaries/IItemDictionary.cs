@@ -1,29 +1,28 @@
-﻿namespace TestEase.LibraryItemDictionaries
+﻿using System.IO;
+using TestEase.LibraryItems;
+
+namespace TestEase.LibraryItemDictionaries
 {
-    using System.IO;
-
-    using LibraryItems;
-
     /// <summary>
-    /// Maintains a collection of library items
+    ///     Maintains a collection of library items
     /// </summary>
     public interface IItemDictionary
     {
         /// <summary>
-        /// Gets the file extension, including the period
+        ///     Gets the file extension, including the period
         /// </summary>
         string FileExtension { get; }
 
         /// <summary>
-        /// Gets the <see cref="ItemFileType"/>
+        ///     Gets the <see cref="ItemFileType" />
         /// </summary>
         ItemFileType FileType { get; }
 
         /// <summary>
-        /// FileInfo that will be used to set backing properties to library item
+        ///     FileInfo that will be used to set backing properties to library item
         /// </summary>
         /// <param name="file">
-        /// <see cref="FileInfo"/> to be used
+        ///     <see cref="FileInfo" /> to be used
         /// </param>
         void AddFileInfo(FileInfo file);
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace TestEase.Tests
         [Test]
         public void DuplicateRegistrationAndNoOverrideTest()
         {
-            var tm = new TestDataManager();
+            var tm = new TestDataManager(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             void RegisterAction()
             {
@@ -31,7 +32,7 @@ namespace TestEase.Tests
         [Test]
         public void OverrideRegistrationTest()
         {
-            var tm = new TestDataManager();
+            var tm = new TestDataManager(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             var newDic = new SqlItemDictionary();
 
             tm.Dictionaries.Register<SqlItemDictionary>(newDic, true);
@@ -42,7 +43,7 @@ namespace TestEase.Tests
         [Test]
         public void RegistrationWithInstanceAndNoOverrideTest()
         {
-            var tm = new TestDataManager();
+            var tm = new TestDataManager(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             var newDic = new SqlItemDictionary();
 
 
@@ -58,7 +59,7 @@ namespace TestEase.Tests
         [Test]
         public void RegistrationWithInstanceTest()
         {
-            var tm = new TestDataManager();
+            var tm = new TestDataManager(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             var newDic = new SqlItemDictionary();
 
             tm.Dictionaries.Clear();
