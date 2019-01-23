@@ -30,4 +30,5 @@ steps:
       versioningScheme: byEnvVar
       versionEnvVar: Build.BuildNumber
       verbosityPack: detailed
+      publishSymbols: true
   - task: PublishBuildArtifacts@1
