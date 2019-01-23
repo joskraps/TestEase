@@ -55,8 +55,10 @@ namespace TestEase.LibraryItemDictionaries
 
                 results.AddRange(RunSql(connections[queuedSqlKey.ToUpper()], GetQueuedSql[queuedSqlKey].ToString()));
 
-                GetQueuedSql[queuedSqlKey].Clear();
+               
             }
+
+            GetQueuedSql.Clear();
 
             return results;
         }
@@ -266,6 +268,13 @@ namespace TestEase.LibraryItemDictionaries
             if (!GetQueuedSql.ContainsKey(connectionName)) GetQueuedSql.Add(connectionName, new StringBuilder());
 
             GetQueuedSql[connectionName].AppendLine(sqlCode);
+        }
+
+        public string GetConnection(string connectionName)
+        {
+            if(!connections.ContainsKey(connectionName)) throw new KeyNotFoundException();
+
+            return connections[connectionName];
         }
     }
 }
